@@ -5,8 +5,9 @@ public class Client implements Runnable {
     private int amount;
     private RequestType requestType;
     private Request request;
+    private FrontEnd frontEnd;
 
-    public Client(String clientName, int amount, RequestType requestType) {
+    public Client(String clientName, int amount, RequestType requestType, FrontEnd frontEnd) {
         this.clientName = clientName;
         this.amount = amount;
         this.requestType = requestType;
@@ -15,16 +16,11 @@ public class Client implements Runnable {
 
     @Override
     public void run() {
-
-    }
-
-    @Override
-    public String toString() {
-        return "Client{" +
-                ", clientName='" + clientName + '\'' +
-                ", amount=" + amount +
-                ", requestType=" + requestType +
-                ", threadNmae=" + Thread.currentThread().getName() +
-                '}';
+        System.out.println("Заявка " + request.toString() + " отправлена банку");
+        try {
+            frontEnd.addRequest(request);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
