@@ -12,6 +12,7 @@ public class Client implements Runnable {
         this.amount = amount;
         this.requestType = requestType;
         this.request = new Request(requestType, amount, clientName);
+        this.frontEnd = frontEnd;
     }
 
     @Override

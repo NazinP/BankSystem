@@ -9,7 +9,7 @@ public class FrontEnd {
             wait();
         }
         requestList.add(request);
-        System.out.println("Заявка" + request.toString() + "обрабатывается");
+        System.out.println("Заявка " + request.toString() + " обрабатывается");
         notifyAll();
     }
 }
