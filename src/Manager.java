@@ -1,12 +1,21 @@
-public class Manager implements Runnable{
-    private Request request;
+import java.util.Objects;
 
-    public void setRequest(Request request) {
-        this.request = request;
+public class Manager implements Runnable {
+    private FrontEnd frontEnd;
+    private BackEnd backEnd;
+
+    public Manager(FrontEnd frontEnd, BackEnd backEnd) {
+        this.frontEnd = frontEnd;
+        this.backEnd = backEnd;
     }
 
     @Override
     public void run() {
-
+        while(!Thread.currentThread().isInterrupted()) {
+            Request request = frontEnd.getRequest();
+            if (Objects.nonNull(request)) {
+                backEnd.executeRequest(request);
+            }
+        }
     }
 }

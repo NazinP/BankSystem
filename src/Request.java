@@ -1,28 +1,32 @@
 public class Request {
-    private RequestType requestType;
+    private String clientThreadName;
     private int amount;
-    private String nameOfOwner;
+    private RequestType type;
 
-    public Request(RequestType requestType, int amount, String nameOfRequest) {
-        this.requestType = requestType;
+    public Request(String clientThreadName, int amount, RequestType type) {
+        this.clientThreadName = clientThreadName;
         this.amount = amount;
-        this.nameOfOwner = nameOfRequest;
+        this.type = type;
     }
 
-    public RequestType getRequestType() {
-        return requestType;
+    public String getClientThreadName() {
+        return clientThreadName;
     }
 
-    public int getAmount(){
+    public int getAmount() {
         return amount;
+    }
+
+    public RequestType getType() {
+        return type;
     }
 
     @Override
     public String toString() {
         return "Request{" +
-                "requestType=" + requestType +
+                "clientThreadName='" + clientThreadName + '\'' +
                 ", amount=" + amount +
-                ", nameOfRequest='" + nameOfOwner + '\'' +
+                ", type=" + type +
                 '}';
     }
 }

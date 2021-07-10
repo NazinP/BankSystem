@@ -1,28 +1,36 @@
-import java.util.LinkedList;
-import java.util.List;
+import java.util.ArrayDeque;
+import java.util.NoSuchElementException;
 import java.util.Queue;
 
 public class FrontEnd {
-    private Queue<Request> requestList = new LinkedList<>();
+    private Queue<Request> requests = new ArrayDeque<>();
+    private int requestLeft;
 
-    public synchronized void addRequest(Request request) throws InterruptedException {
-        while (requestList.size() == 2) {
-            wait();
+    public FrontEnd(int requestLeft) {
+        this.requestLeft = requestLeft;
+    }
+
+    public synchronized void addRequest(Request request) {
+        try {
+            while (requests.size() == 2) {
+                wait();
+            }
+            requests.add(request);
+            System.out.printf("%s: %s отправлена в банк\n", request.getClientThreadName(), request);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
-        requestList.add(request);
-        System.out.println("������ " + request.toString() + " ��������������");
-        notifyAll();
     }
 
     public synchronized Request getRequest() {
-        while (requestList.isEmpty()) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        try {
+            Request request = requests.remove();
+            System.out.printf("%s: получена заявка на обработку по клиенту - %s \n", Thread.currentThread().getName(), request.getClientThreadName());
+            return request;
+        } catch (NoSuchElementException e) {
+            return null;
+        } finally {
+            notifyAll();
         }
-        Request request = requestList.poll();
-        return request;
     }
 }

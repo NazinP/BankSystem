@@ -1,27 +1,21 @@
 import java.util.Random;
 
-public class Client implements Runnable {
-    private String clientName;
-    private int amount;
-    private RequestType requestType;
-    private Request request;
+public class Client implements Runnable{
     private FrontEnd frontEnd;
+    private final int multiplicity = 10000;
 
-    public Client(String clientName, int amount, RequestType requestType, FrontEnd frontEnd) {
-        this.clientName = clientName;
-        this.amount = amount;
-        this.requestType = requestType;
-        this.request = new Request(requestType, amount, clientName);
+    public Client(FrontEnd frontEnd) {
         this.frontEnd = frontEnd;
     }
 
     @Override
     public void run() {
-        System.out.println("Заявка " + request.toString() + " отправлена банку");
-        try {
-            frontEnd.addRequest(request);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Random random = new Random();
+        int amount = (random.nextInt(100) + 1) * multiplicity;
+
+        RequestType type = RequestType.values()[random.nextInt(2)];
+        Request request = new Request(Thread.currentThread().getName(), amount, type);
+
+        frontEnd.addRequest(request);
     }
 }
